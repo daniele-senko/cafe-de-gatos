@@ -32,14 +32,11 @@
                     <td>{{ gato.raca }}</td>
                     <td>{{ gato.idade }} anos</td>
                     <td>{{ gato.area }}</td>
+
                     <td>
-                        <v-chip size="small" :color="gato.sociavel ? 'success' : 'warning'" class="mr-2">
-                            {{ gato.sociavel ? 'Sociável' : 'Tímido' }}
-                        </v-chip>
-                        <v-chip v-if="gato.favorito" size="small" color="primary">
-                            Favorito
-                        </v-chip>
+                        <StatusGato :sociavel="gato.sociavel" :favorito="gato.favorito" />
                     </td>
+
                     <td class="text-center">
                         <v-btn size="small" color="warning" class="mr-2" variant="tonal" :to="`/cadastro/${gato.id}`">
                             Editar
@@ -57,10 +54,10 @@
 <script setup lang="ts">
 // importa direito da ref da lista do store
 import { gatos, excluirGato } from '../store/gatos';
+import StatusGato from '../components/StatusGato.vue';
 
 /**
- * Função para confirmar e executar a exclusão de um registro.
- * Atende ao RF5 (Delete com confirmação).
+ * Função para confirmar e executar a exclusão de um registro..
  */
 function confirmarExclusao(id: number) {
     // utilizar o confirm nativo do navegador para simplificar e atender ao requisitos
