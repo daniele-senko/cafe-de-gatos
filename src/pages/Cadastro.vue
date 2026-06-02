@@ -4,12 +4,11 @@
             <v-col cols="12" md="8" offset-md="2">
                 <v-card elevation="2">
                     <v-card-title class="text-h5 pb-4">
-                        Cadastrar Novo Gato
+                        {{ isEditando ? `Editando: ${gatoAtual.nome}` : 'Cadastrar Novo Gato' }}
                     </v-card-title>
 
                     <v-card-text>
                         <v-form @submit.prevent="salvar">
-
                             <v-text-field v-model="gatoAtual.nome" label="Nome do Gato" variant="outlined"
                                 required></v-text-field>
 
@@ -47,13 +46,14 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
-import { useRouter } from 'vue-router';
-import { salvarGato } from '../store/gatos';
+import { ref, onMounted, computed } from 'vue'
+import { useRouter, useRoute } from 'vue-router';
+import { salvarGato, gatos } from '../store/gatos';
 import type { Gato } from '../store/gatos';
 
 // instancia do router para redirecionamento programatico 
 const router = useRouter();
+const route = useRoute();
 
 // opções para o v-select
 const areasDisponiveis = ['Salão Principal', 'Jardim de Inverno', 'Área VIP', 'Espaço de Descanso'];
@@ -70,8 +70,30 @@ const gatoAtual = ref<Gato>({
     favorito: false,
 });
 
+//propriedade computada para saber se a tela está em modo edição
+const isEditando = computed(() => gatoAtual.value.id !== 0);
+
+/**
+ * Hook de ciclo de vida executado quando o componente é montado.
+ * Responsável por carregar os dados se um ID for passado na URL (Update).
+ */
+onMounted(() => {
+    const paramId = route.params.id;
+
+    if (paramId) {
+        const idNumero = Number(paramId);
+        // busca na ref global (store) o gato com o id correspondente
+        const gatoExistente = gatos.value.find(g => g.id === idNumero);
+
+        if (gatoExistente) {
+            // cria uma copia dos dados para não alterar o store diretamente antes de clicar em salvar
+            gatoAtual.value = { ...gatoExistente };
+        }
+    }
+});
+
 function salvar() {
-    // caham a função do store para salvar em memória
+    // chama a função do store para salvar em memória
     salvarGato(gatoAtual.value)
 
     //redireciona o usuário de volta para a lista após salvar
