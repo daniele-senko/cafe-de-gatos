@@ -2,24 +2,24 @@
     <v-container>
         <v-row>
             <v-col cols="12" md="8" offset-md="2">
-                <v-card elevation="2">
-                    <v-card-title class="text-h5 pb-4">
+                <v-card elevation="2" color="surface">
+                    <v-card-title class="text-h5 pb-4 text-primary">
                         {{ isEditando ? `Editando: ${gatoAtual.nome}` : 'Cadastrar Novo Gato' }}
                     </v-card-title>
 
                     <v-card-text>
                         <v-form @submit.prevent="salvar">
                             <v-text-field v-model="gatoAtual.nome" label="Nome do Gato" variant="outlined"
-                                required></v-text-field>
+                                color="primary" required></v-text-field>
 
-                            <v-text-field v-model="gatoAtual.raca" label="Raça" variant="outlined"
+                            <v-text-field v-model="gatoAtual.raca" label="Raça" variant="outlined" color="primary"
                                 required></v-text-field>
 
                             <v-text-field v-model.number="gatoAtual.idade" label="Idade (anos)" type="number"
-                                variant="outlined" required></v-text-field>
+                                variant="outlined" color="primary" required></v-text-field>
 
                             <v-select v-model="gatoAtual.area" :items="areasDisponiveis" label="Área do Café"
-                                variant="outlined" required></v-select>
+                                variant="outlined" color="primary" required></v-select>
 
                             <v-row>
                                 <v-col cols="12" sm="6">
@@ -34,8 +34,14 @@
 
                             <v-card-actions class="px-0 pt-4">
                                 <v-spacer></v-spacer>
-                                <v-btn color="error" variant="text" to="/lista">Cancelar</v-btn>
-                                <v-btn color="primary" variant="elevated" type="submit">Salvar</v-btn>
+                                <v-btn color="error" variant="text" to="/lista" class="text-caption pixel-font"
+                                    prepend-icon="mdi-paw">
+                                    Cancelar
+                                </v-btn>
+                                <v-btn color="primary" variant="elevated" type="submit" class="text-caption pixel-font"
+                                    prepend-icon="mdi-paw">
+                                    Salvar
+                                </v-btn>
                             </v-card-actions>
                         </v-form>
                     </v-card-text>
