@@ -1,18 +1,26 @@
 <template>
   <v-app>
+    <v-app-bar color="brown-darken-3" prominent>
+      <v-app-bar-title>Café de Gatos</v-app-bar-title>
+
+      <v-spacer></v-spacer>
+
+      <v-btn to="/" variant="text">Home</v-btn>
+      <v-btn to="/lista" variant="text">Lista</v-btn>
+      <v-btn to="/cadastro" variant="text">Cadastro</v-btn>
+      <v-btn to="/sobre" variant="text">Sobre</v-btn>
+    </v-app-bar>
+
+
     <v-main>
-      <HelloWorld />
+      <v-container>
+        <router-view></router-view>
+      </v-container>
     </v-main>
-    <v-btn
-      class="ma-2"
-      icon="mdi-theme-light-dark"
-      location="top right"
-      position="absolute"
-      @click="$vuetify.theme.cycle()"
-    />
+
   </v-app>
 </template>
 
 <script lang="ts" setup>
-  import HelloWorld from '@/components/HelloWorld.vue'
+//lógica do componente raiz
 </script>
