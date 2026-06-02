@@ -1,75 +1,25 @@
-# cafe-de-gatos
+# Café de Gatos (Pixel Art Edition)
 
-Scaffolded with Vuetify CLI.
+**Tema escolhido:** Gerenciamento de Café de Gatos (CRUD)
+**Aluna:** Daniele Senko
 
-## ❗️ Documentation
+## Sobre o Projeto
 
-- Primary docs: https://vuetifyjs.com/
-- Getting started guide: https://vuetifyjs.com/en/getting-started/installation/
-- Community support: https://community.vuetifyjs.com/
-- Issue tracker: https://issues.vuetifyjs.com/
+Mini-aplicação desenvolvida para a disciplina de Frameworks Modernos para Desenvolvimento de Sistemas (FACET-SNP-310).
+O sistema realiza o gerenciamento de residentes felinos, áreas do café e preferências dos clientes em memória, cumprindo todas as exigências de CRUD (Create, Read, Update, Delete) utilizando Vue 3, Vuetify e Vue Router. O design foi adaptado para uma estética 8-bit monocromática (tons de rosa).
 
-## 🧱 Stack
+## Como rodar o projeto
 
-- Framework: Vue 3 + Vite
-- UI Library: Vuetify
-- Language: TypeScript
-- Package manager: bun
+Para executar esta aplicação localmente, certifique-se de ter o [Bun](https://bun.sh/) instalado na sua máquina.
 
-## 🧭 Start Here
+1. Instale as dependências:
+   \`\`\`bash
+   bun install
+   \`\`\`
 
-- Main entry: `src/main.ts`
-- Main app component: `src/App.vue`
-- Main styles: `src/styles/`
-- Plugin setup: `src/plugins/`
+2. Inicie o servidor de desenvolvimento:
+   \`\`\`bash
+   bun dev
+   \`\`\`
 
-## 📁 Project Structure
-
-- `src/main.ts` — application entry point
-- `src/App.vue` — root component
-- `src/components/` — reusable Vue components
-- `src/plugins/` — plugin registration and setup
-- `src/styles/` — global styles and theme settings
-- `public/` — static public files
-
-## ✨ Enabled Features
-
-- Base setup
-
-## 💿 Install
-
-Use your selected package manager (bun) to install dependencies:
-
-```bash
-bun install
-```
-
-## 🚀 Quick Start
-
-```bash
-bun install
-bun dev
-```
-
-## 🏗️ Build
-
-```bash
-bun build
-```
-
-## 🧪 Available Scripts
-
-- `bun dev`
-- `bun build`
-- `bun preview`
-- `bun build-only`
-- `bun type-check`
-
-## 💪 Support Vuetify Development
-
-This project uses Vuetify - an MIT licensed Open Source project. We are glad to welcome contributors and any support for ongoing development:
-
-- Contribute to Vuetify and ecosystem projects: https://github.com/vuetifyjs
-- Request enterprise support: https://support.vuetifyjs.com/
-- Sponsor on GitHub: https://github.com/sponsors/vuetifyjs
-- Support on Open Collective: https://opencollective.com/vuetify
+3. Acesse o link gerado no terminal (geralmente http://localhost:5173).
