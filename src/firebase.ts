@@ -3,12 +3,12 @@ import { getFirestore } from "firebase/firestore";
 import { getAuth, GoogleAuthProvider } from "firebase/auth";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyB5WEN1Bsu-t30onVnk1nNvJtwOob4IqM4",
-  authDomain: "cafe-de-gatos-app.firebaseapp.com",
-  projectId: "cafe-de-gatos-app",
-  storageBucket: "cafe-de-gatos-app.firebasestorage.app",
-  messagingSenderId: "344429497500",
-  appId: "1:344429497500:web:f03363fd2f9fec37917159",
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+  appId: import.meta.env.VITE_FIREBASE_APP_ID,
 };
 
 const app = initializeApp(firebaseConfig);
