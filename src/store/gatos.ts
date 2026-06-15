@@ -1,12 +1,17 @@
-// importamos o 'ref' do vue para tornar nossa lista reativa
-// qualquer alteração nessa lista atualizará a interface automaticamente
 import { ref } from "vue";
-
-// definição da interface (contrato) do nosso objeto Gato
-// isso garante que todos os registros possuam os campos exigidos
+import { defineStore } from "pinia";
+import { auth, db } from "../firebase";
+import {
+  collection,
+  addDoc,
+  updateDoc,
+  deleteDoc,
+  doc,
+  getDocs,
+} from "firebase/firestore";
 
 export interface Gato {
-  id: number;
+  id?: string;
   nome: string;
   raca: string;
   idade: number;
@@ -15,39 +20,57 @@ export interface Gato {
   favorito: boolean;
 }
 
-// inicializa a lista vazia. ela sera o nosso "banco de dados" em memória
-// o export permite que outras partes da aplicação acessem esta variavel
+export const useGatosStore = defineStore("gatos", () => {
+  const gatos = ref<Gato[]>([]);
+  const gatosCollection = collection(db, "gatos");
 
-export const gatos = ref<Gato[]>([]);
-
-/**
- * Função responsável por criar um novo registro ou atualizar um existente.
- * Atende aos requisitos Create e Update do CRUD.
- * * @param gato Objeto contendo os dados do formulário
- */
-export function salvarGato(gato: Gato): void {
-  // verifica se o gato já possui um id (caracteriza uma edição/update)
-  if (gato.id) {
-    // buscamos o índice do elemento no array
-    const index = gatos.value.findIndex((g) => g.id === gato.id);
-    if (index !== -1) {
-      // atualizamos o registro mantendo a reatividade
-      gatos.value[index] = { ...gato };
+  async function buscarGatos(): Promise<void> {
+    try {
+      if (!auth.currentUser) {
+        console.warn(
+          "usuário não detectado ainda. aguardando autenticação para buscar dados.",
+        );
+        return;
+      }
+      const snapshot = await getDocs(gatosCollection);
+      gatos.value = snapshot.docs.map((doc) => ({
+        ...(doc.data() as Gato),
+        id: doc.id,
+      }));
+    } catch (error) {
+      console.error("Erro ao buscar gatos: ", error);
+      throw error;
     }
-  } else {
-    // caso não exista o id, é um novo registro (create)
-    // utilizamos o Date.now() para gerar um ID númerico único baseado no timestamp
-    const novoGato = { ...gato, id: Date.now() };
-    gatos.value.push(novoGato);
   }
-}
 
-/**
- * Função responsável por remover um registro da lista.
- * Atende ao requisito Delete do CRUD.
- * * @param id Identificador único do gato a ser removido
- */
-export function excluirGato(id: number): void {
-  // filtra a lista, mantendo apenas os elementos com id diferente do informado
-  gatos.value = gatos.value.filter((g) => g.id !== id);
-}
+  async function salvarGato(gato: Gato): Promise<void> {
+    try {
+      // Aqui eu separo o ID do restante dos dados para que o Firestore não salve um campo "id" redundante no documento
+      const { id, ...dados } = gato;
+      if (id) {
+        const gatoRef = doc(db, "gatos", id);
+        await updateDoc(gatoRef, dados);
+      } else {
+        await addDoc(gatosCollection, dados);
+      }
+      // Chamo a busca novamente para atualizar a lista reativa e refletir a mudança na tela imediatamente
+      await buscarGatos();
+    } catch (error) {
+      console.error("Erro ao salvar gato: ", error);
+      throw error;
+    }
+  }
+
+  async function excluirGato(id: string): Promise<void> {
+    try {
+      const gatoRef = doc(db, "gatos", id);
+      await deleteDoc(gatoRef);
+      await buscarGatos();
+    } catch (error) {
+      console.error("Erro ao excluir gato: ", error);
+      throw error;
+    }
+  }
+
+  return { gatos, buscarGatos, salvarGato, excluirGato };
+});

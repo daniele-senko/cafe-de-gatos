@@ -11,7 +11,7 @@
             </v-col>
         </v-row>
 
-        <v-alert v-if="gatos.length === 0" type="info" variant="tonal" class="mt-4" color="primary">
+        <v-alert v-if="gatosStore.gatos.length === 0" type="info" variant="tonal" class="mt-4" color="primary">
             Nenhum gato cadastrado no café ainda. Clique em "+ Novo Gato" para adicionar o primeiro residente.
         </v-alert>
 
@@ -27,7 +27,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="gato in gatos" :key="gato.id">
+                <tr v-for="gato in gatosStore.gatos" :key="gato.id">
                     <td class="font-weight-bold">{{ gato.nome }}</td>
                     <td>{{ gato.raca }}</td>
                     <td>{{ gato.idade }} anos</td>
@@ -41,7 +41,7 @@
                             Editar
                         </v-btn>
                         <v-btn size="small" color="error" variant="tonal" class="text-caption pixel-font"
-                            @click="confirmarExclusao(gato.id)" prepend-icon="mdi-paw">
+                            @click="gato.id && confirmarExclusao(gato.id)" prepend-icon="mdi-paw">
                             Excluir
                         </v-btn>
                     </td>
@@ -52,18 +52,24 @@
 </template>
 
 <script setup lang="ts">
-// importa direito da ref da lista do store
-import { gatos, excluirGato } from '../store/gatos';
+import { onMounted } from 'vue';
+import { useGatosStore } from '../store/gatos';
 import StatusGato from '../components/StatusGato.vue';
 
-/**
- * Função para confirmar e executar a exclusão de um registro.
- */
-function confirmarExclusao(id: number) {
-    // utilizar o confirm nativo do navegador para simplificar e atender ao requisitos
-    const confirmacao = confirm('Tem certeza que deseja remover este gato do sistema?')
+const gatosStore = useGatosStore();
+
+// Eu uso o hook onMounted para garantir que os dados sejam buscados no Firebase logo na abertura da página
+onMounted(async () => {
+    await gatosStore.buscarGatos();
+});
+
+// Eu criei esta função para exclusão. O parâmetro 'id' é do tipo string, pois é assim que o Firebase gera as chaves únicas dos documentos.
+function confirmarExclusao(id: string) {
+    // Eu optei por manter o confirm nativo do navegador pela simplicidade e praticidade.
+    const confirmacao = confirm('Tem certeza que deseja remover este gato do sistema?');
     if (confirmacao) {
-        excluirGato(id);
+        // Aqui eu chamo a action da store que efetua o deleteDoc no banco e atualiza a nossa lista reativa.
+        gatosStore.excluirGato(id);
     }
 }
 </script>

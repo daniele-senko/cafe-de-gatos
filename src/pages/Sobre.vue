@@ -20,11 +20,13 @@
                 <p class="text-body-1 text-black font-weight-bold mb-2">
                     Tema: Café de Gatos (Pixel Art Edition)
                 </p>
+                
                 <p class="text-body-2 text-black">
                     Mini-aplicação desenvolvida para a disciplina de Frameworks Modernos para Desenvolvimento de
                     Sistemas (UNEMAT).
                     O sistema realiza o gerenciamento de residentes felinos, áreas do café e preferências dos clientes
-                    em memória, cumprindo todas as exigências do CRUD.
+                    com persistência real em banco de dados na nuvem (firebase firestore) e autenticação via google, 
+                    cumprindo todas as exigências do CRUD.
                 </p>
             </v-card-text>
         </v-card>
@@ -32,4 +34,7 @@
     </v-container>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+// Este é um componente estático e puramente visual que eu criei para a apresentação do projeto. 
+// Não há necessidade de importar funções do Firebase aqui, pois ele serve apenas como documentação.
+</script>
