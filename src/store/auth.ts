@@ -14,7 +14,24 @@ export const useAuthStore = defineStore('auth', () => {
 
     async function loginComGoogle(): Promise<void> {
         try {
-            await signInWithPopup(auth, provider);
+            const result = await signInWithPopup(auth, provider);
+            const user = result.user;
+            
+            const token = await user.getIdToken();
+            
+            // envio o token para o backend através do cabeçalho authorization.
+            const response = await fetch('http://localhost:3000/api/auth/validate', {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+
+            if (!response.ok) {
+                throw new Error('Falha na validação do token no backend');
+            }
+
+            console.log('Token validado com sucesso no backend!');
         } catch (error) {
             console.error('Erro ao fazer login: ', error);
             throw error;
